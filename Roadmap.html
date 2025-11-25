@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Roadmap Designer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        h1,
+        h2 {
+            margin: 0 0 12px;
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .card-header small {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+        }
+
+        .form-grid-1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        label span.req {
+            color: #ef4444;
+            margin-left: 2px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 14px;
+            background: #f9fafb;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+            background: #ffffff;
+        }
+
+        textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .hint {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .duration-section {
+            border-radius: 10px;
+            padding: 12px 12px 8px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            margin-top: 4px;
+        }
+
+        .duration-type {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .duration-type label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .duration-custom-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .duration-summary {
+            font-size: 12px;
+            color: #374151;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .pill {
+            padding: 2px 8px;
+            border-radius: 999px;
+            border: 1px dashed #d1d5db;
+            font-size: 11px;
+            background: #ffffff;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: none;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #2563eb, #4f46e5);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #111827;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        th,
+        td {
+            padding: 8px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        tr:nth-child(even) td {
+            background: #f9fafb;
+        }
+
+        .tag {
+            display: inline-flex;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            background: #ecfeff;
+            border: 1px solid #cffafe;
+            margin-right: 4px;
+            margin-bottom: 2px;
+        }
+
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .status-pill.draft {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: #bfdbfe;
+        }
+
+        .status-pill.archived {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #fde68a;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .duration-custom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-wrapper">
+        <!-- PAGE TITLE -->
+        <div style="margin-bottom: 16px;">
+            <h1>Roadmap Designer</h1>
+            <p class="hint">
+                Define a learning / skill roadmap using courses. Duration supports days, months (with decimals), and
+                years.
+            </p>
+        </div>
+
+        <!-- ROADMAP DETAILS CARD -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2>Roadmap Details</h2>
+                    <small>Main information for the roadmap</small>
+                </div>
+                <span class="badge">Roadmap ID auto / manual</span>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="roadmapId">Roadmap ID<span class="req">*</span></label>
+                    <input type="text" id="roadmapId" placeholder="RM-2025-001" value="RM-2025-001">
+                    <div class="hint">Unique identifier for this roadmap.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="roadmapName">Roadmap Name<span class="req">*</span></label>
+                    <input type="text" id="roadmapName" placeholder="Full Stack Web Developer"
+                        value="Full Stack Web Developer Roadmap">
+                </div>
+
+                <div class="form-group">
+                    <label for="goal">Goal<span class="req">*</span></label>
+                    <textarea id="goal" placeholder="Describe the purpose or outcome of this roadmap.">
+Prepare a learner to design, develop, test and deploy full-stack web applications using modern tools within 6 months.</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="roadmapPrereq">Roadmap Pre-requisites</label>
+                    <textarea id="roadmapPrereq"
+                        placeholder="What should the learner already know or be able to do before starting this roadmap?">
+Basic computer usage, familiarity with using a web browser, and comfort learning online. Prior exposure to any programming language is helpful but not mandatory.
+    </textarea>
+                    <div class="hint">
+                        Describe the minimum skills, knowledge, or roles expected before a learner starts this roadmap.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="domain">Domain<span class="req">*</span></label>
+                    <select id="domain">
+                        <option value="">-- Select Domain --</option>
+                        <option selected>Software Development</option>
+                        <option>Data Science</option>
+                        <option>Cloud & DevOps</option>
+                        <option>Business & Management</option>
+                        <option>Soft Skills</option>
+                    </select>
+                    <div class="hint">Domain / category of this roadmap.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="level">Roadmap Level</label>
+                    <select id="level">
+                        <option>Beginner</option>
+                        <option selected>Beginner to Intermediate</option>
+                        <option>Intermediate</option>
+                        <option>Intermediate to Advanced</option>
+                        <option>Advanced</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="owner">Owner / Created By</label>
+                    <input type="text" id="owner" placeholder="Roadmap Owner" value="L&D Team">
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate">Suggested Start Date</label>
+                    <input type="date" id="startDate" value="2025-12-01">
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">Suggested End Date</label>
+                    <input type="date" id="endDate" value="2026-05-31">
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option selected>Draft</option>
+                        <option>Active</option>
+                        <option>Archived</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- DURATION SECTION -->
+            <div class="form-group" style="margin-top: 16px;">
+                <label>Duration<span class="req">*</span></label>
+                <div class="duration-section">
+                    <div class="duration-type">
+                        <label>
+                            <input type="radio" name="durationType" value="standard" checked>
+                            Standard (fixed duration)
+                        </label>
+                        <label>
+                            <input type="radio" name="durationType" value="custom">
+                            Custom (days, months, year)
+                        </label>
+                    </div>
+
+                    <!-- STANDARD DURATION -->
+                    <div id="standardDurationWrap" class="form-grid-2">
+                        <div class="form-group">
+                            <label for="standardDurationValue">Standard Duration</label>
+                            <input type="number" id="standardDurationValue" step="0.25" value="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="standardDurationUnit">Unit</label>
+                            <select id="standardDurationUnit">
+                                <option value="months" selected>Months</option>
+                                <option value="days">Days</option>
+                                <option value="years">Years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- CUSTOM DURATION -->
+                    <div id="customDurationWrap" style="display:none; margin-top: 8px;">
+                        <div class="duration-custom-grid">
+                            <div class="form-group">
+                                <label for="customYears">Years</label>
+                                <input type="number" id="customYears" step="0.25" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="customMonths">Months (decimals allowed)</label>
+                                <input type="number" id="customMonths" step="0.25" value="5.75">
+                            </div>
+                            <div class="form-group">
+                                <label for="customDays">Days</label>
+                                <input type="number" id="customDays" step="0.5" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="duration-summary">
+                        <span class="hint">
+                            Example: 0.75 month is treated as <strong>22.5 days</strong> (1 month = 30 days).
+                        </span>
+                        <span id="durationTotal" class="pill">Approx. Total Days: 180.0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-secondary" type="button">Clear</button>
+                <button class="btn btn-primary" type="button">
+                    💾 Save Roadmap
+                </button>
+            </div>
+        </div>
+
+        <!-- COURSE MAPPING CARD -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2>Courses in this Roadmap</h2>
+                    <small>Map individual courses that make up this roadmap</small>
+                </div>
+                <span class="badge">Course mapping</span>
+            </div>
+
+            <!-- COURSE FORM (VERTICAL) -->
+            <div class="form-grid-2">
+                <div class="form-group">
+                    <label for="courseId">Course ID</label>
+                    <input type="text" id="courseId" placeholder="CRS-FE-101" value="CRS-FE-101">
+                </div>
+
+                <div class="form-group">
+                    <label for="courseTitle">Course Title</label>
+                    <input type="text" id="courseTitle" placeholder="HTML & CSS Fundamentals"
+                        value="HTML & CSS Fundamentals">
+                </div>
+
+                <div class="form-group">
+                    <label for="courseType">Course Type</label>
+                    <select id="courseType">
+                        <option selected>Online Self-paced</option>
+                        <option>Virtual Instructor-led</option>
+                        <option>Classroom</option>
+                        <option>Workshop / Project</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="courseDuration">Course Duration (hours)</label>
+                    <input type="number" id="courseDuration" step="0.5" value="12">
+                </div>
+
+                <div class="form-group">
+                    <label for="courseLevel">Course Level</label>
+                    <select id="courseLevel">
+                        <option selected>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="coursePrereq">Pre-requisites</label>
+                    <input type="text" id="coursePrereq" placeholder="e.g. Basic computer usage"
+                        value="Basic computer usage">
+                </div>
+
+                <div class="form-group" style="grid-column: 1 / -1;">
+                    <label for="courseTags">Tags</label>
+                    <input type="text" id="courseTags" placeholder="e.g. HTML, CSS, Web Basics"
+                        value="HTML, CSS, Web Basics">
+                    <div class="hint">Comma-separated keywords to search / filter courses.</div>
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button class="btn btn-sm btn-secondary" type="button">Reset Course</button>
+                <button class="btn btn-sm btn-primary" type="button">➕ Add Course to Roadmap</button>
+            </div>
+
+            <!-- DUMMY COURSE TABLE -->
+            <h3 style="margin-top: 18px; margin-bottom: 4px;">Mapped Courses (Dummy Data)</h3>
+            <p class="hint">Sample data to show how the roadmap can be built from multiple courses.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Course ID</th>
+                        <th>Course Title</th>
+                        <th>Type</th>
+                        <th>Level</th>
+                        <th>Duration (hrs)</th>
+                        <th>Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>CRS-FE-101</td>
+                        <td>HTML &amp; CSS Fundamentals</td>
+                        <td>Online Self-paced</td>
+                        <td>Beginner</td>
+                        <td>12</td>
+                        <td>
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                            <span class="tag">Front-end</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>CRS-FE-201</td>
+                        <td>JavaScript Essentials</td>
+                        <td>Virtual Instructor-led</td>
+                        <td>Intermediate</td>
+                        <td>16</td>
+                        <td>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">ES6</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>CRS-BE-101</td>
+                        <td>APIs with Node.js</td>
+                        <td>Online Self-paced</td>
+                        <td>Intermediate</td>
+                        <td>18</td>
+                        <td>
+                            <span class="tag">Node.js</span>
+                            <span class="tag">API</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>CRS-DB-101</td>
+                        <td>SQL &amp; Database Basics</td>
+                        <td>Classroom</td>
+                        <td>Beginner</td>
+                        <td>10</td>
+                        <td>
+                            <span class="tag">SQL</span>
+                            <span class="tag">Database</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>CRS-FS-PROJ</td>
+                        <td>Capstone: Full Stack Project</td>
+                        <td>Workshop / Project</td>
+                        <td>Intermediate</td>
+                        <td>24</td>
+                        <td>
+                            <span class="tag">Project</span>
+                            <span class="tag">Full Stack</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SUMMARY CARD -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h2>Roadmap Snapshot (Dummy)</h2>
+                    <small>Quick view of this sample roadmap</small>
+                </div>
+            </div>
+            <div class="form-grid-1">
+                <div class="form-group">
+                    <label>Snapshot</label>
+                    <div class="hint">
+                        Roadmap <strong>RM-2025-001 – Full Stack Web Developer Roadmap</strong> in domain
+                        <strong>Software Development</strong> is currently in
+                        <span class="status-pill draft">Draft</span> status, with an approximate duration of
+                        <strong>~180 days</strong> and <strong>5 mapped courses</strong>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="saveRoadmapBtn" class="btn btn-primary">💾 Save Roadmap</button>
+
+    <script>
+        // Duration logic
+        function calcStandardDays() {
+            const value = parseFloat(document.getElementById("standardDurationValue").value) || 0;
+            const unit = document.getElementById("standardDurationUnit").value;
+            let days = 0;
+            if (unit === "days") days = value;
+            if (unit === "months") days = value * 30; // 1 month = 30 days
+            if (unit === "years") days = value * 365;
+            return days;
+        }
+
+        function calcCustomDays() {
+            const years = parseFloat(document.getElementById("customYears").value) || 0;
+            const months = parseFloat(document.getElementById("customMonths").value) || 0;
+            const days = parseFloat(document.getElementById("customDays").value) || 0;
+            return years * 365 + months * 30 + days;
+        }
+
+        function updateDurationDisplay() {
+            const type = document.querySelector('input[name="durationType"]:checked').value;
+            let totalDays = 0;
+            if (type === "standard") {
+                totalDays = calcStandardDays();
+            } else {
+                totalDays = calcCustomDays();
+            }
+            document.getElementById("durationTotal").textContent =
+                "Approx. Total Days: " + totalDays.toFixed(1);
+        }
+
+        // Toggle standard/custom visibility
+        document.querySelectorAll('input[name="durationType"]').forEach(radio => {
+            radio.addEventListener("change", () => {
+                const standardWrap = document.getElementById("standardDurationWrap");
+                const customWrap = document.getElementById("customDurationWrap");
+                if (radio.value === "standard" && radio.checked) {
+                    standardWrap.style.display = "grid";
+                    customWrap.style.display = "none";
+                }
+                if (radio.value === "custom" && radio.checked) {
+                    standardWrap.style.display = "none";
+                    customWrap.style.display = "block";
+                }
+                updateDurationDisplay();
+            });
+        });
+
+        // Listen to inputs
+        document.getElementById("standardDurationValue").addEventListener("input", updateDurationDisplay);
+        document.getElementById("standardDurationUnit").addEventListener("change", updateDurationDisplay);
+        document.getElementById("customYears").addEventListener("input", updateDurationDisplay);
+        document.getElementById("customMonths").addEventListener("input", updateDurationDisplay);
+        document.getElementById("customDays").addEventListener("input", updateDurationDisplay);
+
+        // Initial calculation
+        updateDurationDisplay();
+
+        document.getElementById("saveRoadmapBtn").addEventListener("click", function () {
+            // Optional: Add form validation here if needed
+
+            alert("Roadmap saved successfully!");
+
+            // Navigate to grid/table page
+            window.location.href = "grid.html"; // Change filename if needed
+        });
+    </script>
+
+
+</body>
+
+</html>

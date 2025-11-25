@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Assign Roadmap by Department & User Type</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 24px;
+    }
+    h1 {
+      margin-top: 0;
+      color: #1f2933;
+    }
+    .hint {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 16px 18px;
+      margin-bottom: 16px;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 8px;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 3px;
+      color: #374151;
+    }
+    input[type="text"],
+    input[type="date"],
+    select,
+    textarea {
+      padding: 7px 9px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+    }
+    textarea {
+      min-height: 50px;
+      resize: vertical;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 5px 6px;
+      text-align: center;
+    }
+    th {
+      background: #001b26;
+      color: #ffffff;
+    }
+    th.user-col {
+      background: #ffffff;
+      color: #111827;
+      text-align: left;
+      font-weight: 600;
+    }
+    th.module-sub {
+      background: #003040;
+      font-weight: 500;
+    }
+    td.user-cell {
+      text-align: left;
+      font-weight: 500;
+      background: #ffffff;
+    }
+    tbody tr:nth-child(even) td {
+      background: #f9fafb;
+    }
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .btn {
+      border: none;
+      border-radius: 4px;
+      padding: 7px 14px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+    .tag-new, .tag-existing {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 999px;
+      margin-left: 4px;
+    }
+    .tag-new {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .tag-existing {
+      background: #e0f2fe;
+      color: #075985;
+    }
+    .header-col-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .header-col-wrapper span {
+      font-size: 11px;
+    }
+    @media (max-width: 768px) {
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Assign Roadmap – Department & User Type</h1>
+  <p class="hint">
+    Select a roadmap, department, user type, assign date, closure date and then tick checkboxes
+    to assign specific courses to users. You can select all courses for a user, or all users for a course.
+  </p>
+
+  <!-- TOP: Roadmap + dates + remarks + department + user type -->
+  <div class="card">
+    <div class="grid-3">
+      <div class="form-group">
+        <label for="roadmapName">Roadmap Name</label>
+        <select id="roadmapName">
+          <option value="">-- Select --</option>
+          <option value="RM-2025-001">React Developer – Beginner Path</option>
+          <option value="RM-2025-002">Full Stack Web Developer</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="assignDate">Assign Date</label>
+        <input type="date" id="assignDate">
+      </div>
+      <div class="form-group">
+        <label for="closureDate">Possible Date for Closure</label>
+        <input type="date" id="closureDate">
+      </div>
+      <div class="form-group">
+        <label for="department">Department</label>
+        <select id="department">
+          <option value="ALL">All Departments</option>
+          <option value="IT">IT</option>
+          <option value="HR">HR</option>
+          <option value="FIN">Finance</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="userTypeFilter">User Type</label>
+        <select id="userTypeFilter">
+          <option value="ALL">All Users</option>
+          <option value="NEW">New Users</option>
+          <option value="EXISTING">Existing Users</option>
+        </select>
+      </div>
+      <div class="form-group" style="grid-column: span 3;">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" maxlength="500"
+          placeholder="Any special notes for this assignment..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATRIX: Users x Courses -->
+  <div class="card">
+    <div class="toolbar">
+      <div>
+        <label>
+          <input type="checkbox" id="selectAllUsers">
+          Select all users in this filter
+        </label>
+        &nbsp;|&nbsp;
+        Selected Users: <span id="selectedUserCount">0</span>
+      </div>
+      <div>
+        <button class="btn btn-secondary" onclick="window.location.href='create-assignment.html'">
+          Back
+        </button>
+        <button class="btn btn-primary" onclick="saveAssignments()">
+          Save Assignments
+        </button>
+      </div>
+    </div>
+
+    <table id="matrixTable">
+      <thead>
+        <tr>
+          <th class="user-col" rowspan="2">Employee</th>
+          <th rowspan="2">Select<br>User</th>
+          <th rowspan="2">All<br>Courses<br>(Row)</th>
+          <th colspan="3">React Beginner 01</th>
+          <th colspan="3">React Beginner 02</th>
+        </tr>
+        <tr>
+          <!-- 6 course columns: each with header + "select all users for this course" checkbox -->
+          <th class="module-sub">
+            <div class="header-col-wrapper">
+              <span>M1</span>
+              <input type="checkbox" class="course-col-select" data-course-index="0"
+                     title="Select all users for this course">
+            </div>
+          </th>
+          <th class="module-sub">
+            <div class="header-col-wrapper">
+              <span>M2</span>
+              <input type="checkbox" class="course-col-select" data-course-index="1"
+                     title="Select all users for this course">
+            </div>
+          </th>
+          <th class="module-sub">
+            <div class="header-col-wrapper">
+              <span>A1</span>
+              <input type="checkbox" class="course-col-select" data-course-index="2"
+                     title="Select all users for this course">
+            </div>
+          </th>
+          <th class="module-sub">
+            <div class="header-col-wrapper">
+              <span>M1</span>
+              <input type="checkbox" class="course-col-select" data-course-index="3"
+                     title="Select all users for this course">
+            </div>
+          </th>
+          <th class="module-sub">
+            <div class="header-col-wrapper">
+              <span>M2</span>
+              <input type="checkbox" class="course-col-select" data-course-index="4"
+                     title="Select all users for this course">
+            </div>
+          </th>
+          <th class="module-sub">
+            <div class="header-col-wrapper">
+              <span>A1</span>
+              <input type="checkbox" class="course-col-select" data-course-index="5"
+                     title="Select all users for this course">
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- rows injected by JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Dummy user data: department + user_type (NEW / EXISTING)
+    const users = [
+      { id: "EMP001", name: "Anitha", dept: "IT",  user_type: "NEW" },
+      { id: "EMP002", name: "Manoj",  dept: "IT",  user_type: "EXISTING" },
+      { id: "EMP003", name: "Kavya",  dept: "HR",  user_type: "NEW" },
+      { id: "EMP004", name: "Rajesh", dept: "FIN", user_type: "EXISTING" },
+      { id: "EMP005", name: "Priya",  dept: "IT",  user_type: "EXISTING" }
+    ];
+
+    const tbody = document.querySelector("#matrixTable tbody");
+    const deptSelect = document.getElementById("department");
+    const userTypeFilter = document.getElementById("userTypeFilter");
+    const selectAllUsers = document.getElementById("selectAllUsers");
+    const selectedUserCountSpan = document.getElementById("selectedUserCount");
+
+    function renderRows() {
+      const dept = deptSelect.value;
+      const type = userTypeFilter.value;
+
+      tbody.innerHTML = "";
+
+      const filtered = users.filter(u => {
+        const deptOk = (dept === "ALL") || (u.dept === dept);
+        const typeOk = (type === "ALL") || (u.user_type === type);
+        return deptOk && typeOk;
+      });
+
+      filtered.forEach(u => {
+        const tr = document.createElement("tr");
+        tr.dataset.empId = u.id;
+
+        const typeLabel =
+          u.user_type === "NEW"
+            ? '<span class="tag-new">New</span>'
+            : '<span class="tag-existing">Existing</span>';
+
+        tr.innerHTML = `
+          <td class="user-cell">${u.id} - ${u.name} (${u.dept}) ${typeLabel}</td>
+          <td>
+            <input type="checkbox" class="user-select">
+          </td>
+          <td>
+            <input type="checkbox" class="row-all-courses" title="Select all courses for this user">
+          </td>
+          <!-- RB 01 -->
+          <td><input type="checkbox" class="course-checkbox"></td>
+          <td><input type="checkbox" class="course-checkbox"></td>
+          <td><input type="checkbox" class="course-checkbox"></td>
+          <!-- RB 02 -->
+          <td><input type="checkbox" class="course-checkbox"></td>
+          <td><input type="checkbox" class="course-checkbox"></td>
+          <td><input type="checkbox" class="course-checkbox"></td>
+        `;
+        tbody.appendChild(tr);
+
+        // Default course selection based on user type
+        const courseCheckboxes = tr.querySelectorAll(".course-checkbox");
+        if (u.user_type === "NEW") {
+          // New users: all beginner modules checked by default
+          courseCheckboxes.forEach(cb => cb.checked = true);
+        } else {
+          // Existing users: only React Beginner 02 set checked as example (last 3)
+          courseCheckboxes.forEach((cb, index) => {
+            cb.checked = index >= 3; // last 3 checkboxes
+          });
+        }
+      });
+
+      updateSelectedUserCount();
+      wireUserCheckboxes();
+      wireRowAllCoursesCheckboxes();
+      wireColumnCourseCheckboxes();
+    }
+
+    function wireUserCheckboxes() {
+      const userChecks = tbody.querySelectorAll(".user-select");
+      userChecks.forEach(cb => {
+        cb.addEventListener("change", () => {
+          updateSelectedUserCount();
+        });
+      });
+    }
+
+    // Row-level: select all courses for this user
+    function wireRowAllCoursesCheckboxes() {
+      const rowAllCbs = tbody.querySelectorAll(".row-all-courses");
+      rowAllCbs.forEach(cb => {
+        cb.addEventListener("change", () => {
+          const row = cb.closest("tr");
+          const courseCheckboxes = row.querySelectorAll(".course-checkbox");
+          courseCheckboxes.forEach(ch => ch.checked = cb.checked);
+        });
+      });
+    }
+
+    // Column-level: select all users for this course
+    function wireColumnCourseCheckboxes() {
+      const colCbs = document.querySelectorAll(".course-col-select");
+      colCbs.forEach(headerCb => {
+        headerCb.addEventListener("change", () => {
+          const index = parseInt(headerCb.dataset.courseIndex, 10);
+          tbody.querySelectorAll("tr").forEach(row => {
+            const courseCheckboxes = row.querySelectorAll(".course-checkbox");
+            if (courseCheckboxes[index]) {
+              courseCheckboxes[index].checked = headerCb.checked;
+            }
+          });
+        });
+      });
+    }
+
+    function updateSelectedUserCount() {
+      const userChecks = tbody.querySelectorAll(".user-select");
+      let count = 0;
+      userChecks.forEach(cb => {
+        if (cb.checked) count++;
+      });
+      selectedUserCountSpan.textContent = count;
+    }
+
+    deptSelect.addEventListener("change", () => {
+      selectAllUsers.checked = false;
+      renderRows();
+    });
+
+    userTypeFilter.addEventListener("change", () => {
+      selectAllUsers.checked = false;
+      renderRows();
+    });
+
+    selectAllUsers.addEventListener("change", () => {
+      const userChecks = tbody.querySelectorAll(".user-select");
+      userChecks.forEach(cb => {
+        cb.checked = selectAllUsers.checked;
+      });
+      updateSelectedUserCount();
+    });
+
+    function saveAssignments() {
+      // Basic validation
+      if (!document.getElementById("roadmapName").value) {
+        alert("Please select a Roadmap Name.");
+        return;
+      }
+      if (!document.getElementById("assignDate").value) {
+        alert("Please select an Assign Date.");
+        return;
+      }
+      if (!document.getElementById("closureDate").value) {
+        alert("Please select a Possible Date for Closure.");
+        return;
+      }
+
+      const selectedUsers = [];
+      tbody.querySelectorAll("tr").forEach(row => {
+        const userCb = row.querySelector(".user-select");
+        if (userCb && userCb.checked) {
+          selectedUsers.push(row.dataset.empId);
+        }
+      });
+
+      if (selectedUsers.length === 0) {
+        alert("Please select at least one user.");
+        return;
+      }
+
+      alert(
+        "Assignments saved (demo).\n\n" +
+        "Users: " + selectedUsers.join(", ")
+      );
+
+      // Example navigation after save:
+      // window.location.href = "grid.html";
+    }
+
+    // Initial render
+    renderRows();
+  </script>
+</body>
+</html>

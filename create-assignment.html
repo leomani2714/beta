@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Roadmap Assignment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 24px;
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #1f2933;
+    }
+
+    .hint {
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 16px;
+    }
+
+    .page-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #e5e7eb;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 0 0 6px;
+      color: #111827;
+    }
+
+    .card-sub {
+      font-size: 13px;
+      color: #6b7280;
+      margin: 0 0 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 18px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 3px;
+      color: #374151;
+    }
+
+    label span.req {
+      color: #dc2626;
+      margin-left: 2px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      padding: 7px 9px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 13px;
+    }
+
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    }
+
+    .inline-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    .inline-row label {
+      font-weight: normal;
+      margin-bottom: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      margin-left: 6px;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      border-radius: 6px;
+      border: none;
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .hint-text {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <h1>Create Roadmap Assignment</h1>
+    <p class="hint">
+      Capture overall details for assigning a roadmap. In the next step you can choose departments, users, and specific modules.
+    </p>
+
+    <!-- SECTION 1: Assignment Details -->
+    <div class="card">
+      <div class="card-title">
+        Assignment Details
+        <span class="badge">High-level information</span>
+      </div>
+      <p class="card-sub">Give this assignment a clear identity so it can be tracked and reported.</p>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="assignmentId">Assignment ID</label>
+          <input type="text" id="assignmentId" placeholder="ASG-2025-001">
+          <div class="hint-text">Optional. If left blank, system can auto-generate.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="assignmentTitle">Assignment Title<span class="req">*</span></label>
+          <input type="text" id="assignmentTitle" placeholder="React Roadmap - Q1 New Joiners">
+        </div>
+
+        <div class="form-group">
+          <label for="roadmapName">Roadmap Name<span class="req">*</span></label>
+          <select id="roadmapName">
+            <option value="">-- Select Roadmap --</option>
+            <option value="RM-2025-001">React Developer – Beginner Path (RM-2025-001)</option>
+            <option value="RM-2025-002">Full Stack Web Developer (RM-2025-002)</option>
+            <option value="RM-2025-003">Data Analyst Roadmap (RM-2025-003)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="assigningManager">Assigning Manager / Owner</label>
+          <input type="text" id="assigningManager" placeholder="e.g. L&D Manager / Project Lead">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: Target Group -->
+    <div class="card">
+      <div class="card-title">
+        Target Group
+        <span class="badge">Who is this for?</span>
+      </div>
+      <p class="card-sub">Define the high-level audience before selecting exact users.</p>
+
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="department">Primary Department<span class="req">*</span></label>
+          <select id="department">
+            <option value="">-- Select Department --</option>
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="FIN">Finance</option>
+            <option value="OPS">Operations</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="userType">User Type<span class="req">*</span></label>
+          <select id="userType">
+            <option value="">-- Select Type --</option>
+            <option value="NEW">New Users</option>
+            <option value="EXISTING">Existing Users</option>
+            <option value="MIXED">Mixed (New + Existing)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="priority">Priority</label>
+          <select id="priority">
+            <option value="NORMAL">Normal</option>
+            <option value="HIGH">High</option>
+            <option value="CRITICAL">Critical</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: Dates & Effort -->
+    <div class="card">
+      <div class="card-title">
+        Schedule & Effort
+        <span class="badge">Timeline</span>
+      </div>
+      <p class="card-sub">Set start, closure expectations and effort to complete this roadmap.</p>
+
+      <div class="grid-3">
+        <div class="form-group">
+          <label for="assignDate">Assign Date<span class="req">*</span></label>
+          <input type="date" id="assignDate">
+        </div>
+
+        <div class="form-group">
+          <label for="closureDate">Possible Date for Closure<span class="req">*</span></label>
+          <input type="date" id="closureDate">
+          <div class="hint-text">Should be on or after Assign Date.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="expiryDate">Expiry Date (optional)</label>
+          <input type="date" id="expiryDate">
+          <div class="hint-text">After this date, access can be locked.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="effortHours">Expected Effort (Hours)</label>
+          <input type="number" id="effortHours" step="0.5" min="0" placeholder="e.g. 40">
+          <div class="hint-text">Approximate total learning time.</div>
+        </div>
+
+        <div class="form-group">
+          <label for="completionCriteria">Completion Criteria (%)</label>
+          <input type="number" id="completionCriteria" step="1" min="1" max="100" placeholder="e.g. 80">
+          <div class="hint-text">Minimum roadmap completion required to mark as completed.</div>
+        </div>
+
+        <div class="form-group">
+          <label>Assignment Mode</label>
+          <div class="inline-row">
+            <label><input type="radio" name="mode" value="MANDATORY" checked> Mandatory</label>
+            <label><input type="radio" name="mode" value="OPTIONAL"> Optional</label>
+            <label><input type="radio" name="mode" value="RECOMMENDED"> Recommended</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: Notifications -->
+    <div class="card">
+      <div class="card-title">
+        Notifications
+        <span class="badge">Communication</span>
+      </div>
+      <p class="card-sub">Configure how users and managers will be informed.</p>
+
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Initial Notification</label>
+          <div class="inline-row">
+            <label><input type="checkbox" id="sendEmail" checked> Send Email</label>
+            <label><input type="checkbox" id="sendPortal"> Portal Notification</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reminderDays">Reminder Before Closure</label>
+          <select id="reminderDays">
+            <option value="0">No Reminder</option>
+            <option value="3">3 days before</option>
+            <option value="7">7 days before</option>
+            <option value="14">14 days before</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Manager Notifications</label>
+          <div class="inline-row">
+            <label><input type="checkbox" id="notifyManager"> Notify Manager on assignment</label>
+            <label><input type="checkbox" id="notifyOnCompletion"> Notify on completion</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: Remarks -->
+    <div class="card">
+      <div class="card-title">
+        Remarks / Special Instructions
+      </div>
+
+      <div class="form-group">
+        <label for="remarks">Remarks</label>
+        <textarea id="remarks" maxlength="500"
+          placeholder="Any special rules, exemptions, or notes for this assignment..."></textarea>
+        <div class="hint-text">Max 500 characters.</div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-primary" onclick="window.location.href='assign-by-department.html'">
+          Save & Continue to User Selection
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
